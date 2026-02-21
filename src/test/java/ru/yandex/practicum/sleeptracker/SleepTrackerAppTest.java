@@ -2,7 +2,6 @@ import main.java.ru.yandex.practicum.sleeptracker.DataLoader;
 import main.java.ru.yandex.practicum.sleeptracker.FunctionsCollector;
 import main.java.ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
 import main.java.ru.yandex.practicum.sleeptracker.SleepSession;
-import main.java.ru.yandex.practicum.sleeptracker.enums.BirdType;
 import main.java.ru.yandex.practicum.sleeptracker.enums.SleepQuality;
 import main.java.ru.yandex.practicum.sleeptracker.functions.CountGoodSessions;
 import main.java.ru.yandex.practicum.sleeptracker.functions.GetBirdType;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -66,7 +64,7 @@ public class SleepTrackerAppTest {
         }
         CountGoodSessions countGoodSessions = new CountGoodSessions();
         Object result = countGoodSessions.apply(sleepSessions).getValue();
-        assertTrue(5 == (long) result);
+        assertEquals(5, (long) result);
     }
 
     @Test
@@ -90,7 +88,7 @@ public class SleepTrackerAppTest {
 
         GetBirdType getBirdType = new GetBirdType();
         Object result = getBirdType.apply(sleepSessions).getValue();
-        assertEquals("Голубь", (String) result);
+        assertEquals("Голубь", result);
     }
 
     @Test
