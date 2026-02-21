@@ -30,6 +30,11 @@ public class GetBirdType implements Function<List<SleepSession>, SleepAnalysisRe
                 .map(this::countBirdType)
                 .toList();
 
+        if (Collections.frequency(types, BirdType.EARLY_BIRD)
+                == Collections.frequency(types, BirdType.NIGHT_OWL)) {
+            return BirdType.DOVE;
+        }
+
         return types.stream()
                 .max(Comparator.comparingInt(n -> Collections.frequency(types, n)))
                 .orElse(BirdType.DOVE);
@@ -39,8 +44,8 @@ public class GetBirdType implements Function<List<SleepSession>, SleepAnalysisRe
         if (s.getStartTime().isBefore(earlyBirdStartTime) &&
                 s.getFinishTime().isBefore(earlyBirdFinishTime)) {
             return BirdType.EARLY_BIRD;
-        } else if (s.getStartTime().isAfter(nightOwlStartTime) &&
-                s.getStartTime().isAfter(nightOwlFinishTime)) {
+        } else if ((s.getStartTime().isAfter(nightOwlStartTime) || s.getStartTime().isBefore(nightOwlFinishTime))
+                && s.getFinishTime().isAfter(nightOwlFinishTime)) {
             return BirdType.NIGHT_OWL;
         }
         return BirdType.DOVE;

@@ -2,14 +2,18 @@ import main.java.ru.yandex.practicum.sleeptracker.DataLoader;
 import main.java.ru.yandex.practicum.sleeptracker.FunctionsCollector;
 import main.java.ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
 import main.java.ru.yandex.practicum.sleeptracker.SleepSession;
+import main.java.ru.yandex.practicum.sleeptracker.enums.BirdType;
 import main.java.ru.yandex.practicum.sleeptracker.enums.SleepQuality;
 import main.java.ru.yandex.practicum.sleeptracker.functions.CountGoodSessions;
+import main.java.ru.yandex.practicum.sleeptracker.functions.GetBirdType;
 import main.java.ru.yandex.practicum.sleeptracker.functions.GetMaxSessionTime;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -52,7 +56,8 @@ public class SleepTrackerAppTest {
     }
 
     @Test
-    void shouldCountGOODSessions() {
+    @DisplayName("Должен правильно подсчитывать количество сессий определенного типа")
+    void shouldCountGoodSessions() {
         LocalDateTime start = LocalDateTime.of(2026, 2, 21, 3, 3);
         LocalDateTime finish = start.plusHours(5);
         List<SleepSession> sleepSessions = new ArrayList<>();
@@ -62,6 +67,30 @@ public class SleepTrackerAppTest {
         CountGoodSessions countGoodSessions = new CountGoodSessions();
         Object result = countGoodSessions.apply(sleepSessions).getValue();
         assertTrue(5 == (long) result);
+    }
+
+    @Test
+    @DisplayName("При равном количестве жаворонков и сов должен выдавать голубя")
+    void shouldReturnDoveIfEqualSessions() {
+        LocalDateTime earlyStartTime = LocalDateTime.of(2026, 2, 12, 20, 0);
+        LocalDateTime earlyFinishTime = LocalDateTime.of(2026, 2, 13, 4, 0);
+        LocalDateTime lateStartTime = LocalDateTime.of(2026, 2, 13, 1, 0);
+        LocalDateTime lateFinishTime = LocalDateTime.of(2026, 2, 13, 10, 0);
+
+        SleepSession earlyS1 = createSleepSession(earlyStartTime, earlyFinishTime);
+        SleepSession earlyS2 = createSleepSession(earlyStartTime.plusHours(1), earlyFinishTime.plusHours(1));
+        SleepSession lateS1 = createSleepSession(lateStartTime, lateFinishTime);
+        SleepSession lateS2 = createSleepSession(lateStartTime.plusHours(2), lateFinishTime.plusHours(1));
+
+        List<SleepSession> sleepSessions = new ArrayList<>();
+        sleepSessions.add(earlyS1);
+        sleepSessions.add(earlyS2);
+        sleepSessions.add(lateS1);
+        sleepSessions.add(lateS2);
+
+        GetBirdType getBirdType = new GetBirdType();
+        Object result = getBirdType.apply(sleepSessions).getValue();
+        assertEquals("Голубь", (String) result);
     }
 
     @Test
@@ -80,4 +109,5 @@ public class SleepTrackerAppTest {
     private SleepSession createSleepSession(LocalDateTime start, LocalDateTime finish) {
         return new SleepSession(start, finish, SleepQuality.GOOD);
     }
+
 }

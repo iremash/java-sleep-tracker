@@ -4,6 +4,7 @@ import main.java.ru.yandex.practicum.sleeptracker.enums.SleepQuality;
 import main.java.ru.yandex.practicum.sleeptracker.functions.CountSleeplessNights;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -29,6 +30,8 @@ class CountSleeplessNightsTest {
     }
 
     @Test
+    @DisplayName(
+            "Метод должен засчитывать ночь бессонной, если она началась после 6 утра и закончилась в тот же день.")
     void shouldCountSleeplessNightWhenStartAfter6AndFinishSameDay() {
         LocalDateTime date = LocalDateTime.of(2026, 2, 21, 8, 0);
         SleepSession session = createSleepSession(date, date.plusHours(2));
@@ -37,6 +40,7 @@ class CountSleeplessNightsTest {
     }
 
     @Test
+    @DisplayName("Если ночь началась до 6 утра, она должна не считаться бессонной.")
     void shouldNotCountSleeplessNightWhenStartBefore6() {
         LocalDateTime date = LocalDateTime.of(2026, 2, 21, 5, 0);
         SleepSession session = createSleepSession(date, date.plusHours(3));
@@ -46,6 +50,7 @@ class CountSleeplessNightsTest {
 
 
     @Test
+    @DisplayName("Если ночь началась ровно в 6 утра, она должна считаться бессонной.")
     void shouldCountSleeplessNightWhenStartAt600() {
 
         LocalDateTime date = LocalDateTime.of(2026, 2, 21, 6, 0);
@@ -59,6 +64,7 @@ class CountSleeplessNightsTest {
 
 
     @Test
+    @DisplayName("Должен корректно обрабатывать несколько сессий сна за один день")
     void shouldCountCorrectlyMultipleSessionsForSameDay() {
         LocalDateTime date = LocalDateTime.of(2026, 2, 21, 8, 0);
 
@@ -74,6 +80,7 @@ class CountSleeplessNightsTest {
     }
 
     @Test
+    @DisplayName("Должен правильно подсчитывать сессии для разных дней")
     void shouldCountSessionsForDifferentDays() {
         LocalDateTime day1 = LocalDateTime.of(2026, 2, 21, 8, 0);
         LocalDateTime day2 = LocalDateTime.of(2026, 2, 22, 9, 0);
@@ -92,6 +99,7 @@ class CountSleeplessNightsTest {
 
 
     @Test
+    @DisplayName("Должен правильно распределять сессию, начавшуюся в 00:01")
     void shouldHandleSessionStartedAt001() {
         LocalDateTime start = LocalDateTime.of(2026, 2, 21, 0, 1);
         LocalDateTime finish = LocalDateTime.of(2026, 2, 21, 3, 0);
