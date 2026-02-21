@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.function.Function;
 
 public class CountSleeplessNights implements Function<List<SleepSession>, SleepAnalysisResult> {
-    final LocalTime DAY_BOARDER = LocalTime.of(12, 0);
-    final LocalTime NIGHT_END = LocalTime.of(5, 59);
+    final LocalTime dayBoarder = LocalTime.of(12, 0);
+    final LocalTime nightEnd = LocalTime.of(5, 59);
 
 
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {
@@ -22,7 +22,7 @@ public class CountSleeplessNights implements Function<List<SleepSession>, SleepA
         HashMap<LocalDateTime, Boolean> daysData = new HashMap<>();
         sleepSessions
                 .forEach(s -> {
-                    if (s.getStartTime().isBefore(DAY_BOARDER)) {
+                    if (s.getStartTime().isBefore(dayBoarder)) {
                         daysData.merge(s.getStartDate(), checkIfSleepless(s), (ov, nv) -> ov && nv);
                     } else {
                         daysData.merge(getDayAfter(s.getStartDate()), checkIfSleepless(s), (oldValue, newValue) -> oldValue && newValue);
@@ -34,7 +34,7 @@ public class CountSleeplessNights implements Function<List<SleepSession>, SleepA
     }
 
     private boolean checkIfSleepless(SleepSession s1) {
-        return (s1.getStartTime().isBefore(s1.getFinishTime()) && s1.getStartTime().isAfter(NIGHT_END));
+        return (s1.getStartTime().isBefore(s1.getFinishTime()) && s1.getStartTime().isAfter(nightEnd));
     }
 
     private LocalDateTime getDayAfter(LocalDateTime d) {

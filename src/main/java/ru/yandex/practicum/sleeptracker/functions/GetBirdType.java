@@ -12,10 +12,10 @@ import java.util.function.Function;
 
 
 public class GetBirdType implements Function<List<SleepSession>, SleepAnalysisResult> {
-    private final LocalTime EARLY_BIRD_START_TIME = LocalTime.of(22, 0);
-    private final LocalTime EARLY_BIRD_FINISH_TIME = LocalTime.of(7, 0);
-    private final LocalTime NIGHT_OWL_START_TIME = LocalTime.of(23, 0);
-    private final LocalTime NIGHT_OWL_FINISH_TIME = LocalTime.of(9, 0);
+    private final LocalTime earlyBirdStartTime = LocalTime.of(22, 0);
+    private final LocalTime earlyBirdFinishTime = LocalTime.of(7, 0);
+    private final LocalTime nightOwlStartTime = LocalTime.of(23, 0);
+    private final LocalTime nightOwlFinishTime = LocalTime.of(9, 0);
 
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {
         return formMessage(getBirdType(sleepSessions));
@@ -36,11 +36,11 @@ public class GetBirdType implements Function<List<SleepSession>, SleepAnalysisRe
     }
 
     private BirdType countBirdType(SleepSession s) {
-        if (s.getStartTime().isBefore(EARLY_BIRD_START_TIME) &&
-                s.getFinishTime().isBefore(EARLY_BIRD_FINISH_TIME)) {
+        if (s.getStartTime().isBefore(earlyBirdStartTime) &&
+                s.getFinishTime().isBefore(earlyBirdFinishTime)) {
             return BirdType.EARLY_BIRD;
-        } else if (s.getStartTime().isAfter(NIGHT_OWL_START_TIME) &&
-                s.getStartTime().isAfter(NIGHT_OWL_FINISH_TIME)) {
+        } else if (s.getStartTime().isAfter(nightOwlStartTime) &&
+                s.getStartTime().isAfter(nightOwlFinishTime)) {
             return BirdType.NIGHT_OWL;
         }
         return BirdType.DOVE;

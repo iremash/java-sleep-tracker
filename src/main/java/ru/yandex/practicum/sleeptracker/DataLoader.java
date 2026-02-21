@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DataLoader {
-    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
     public List<SleepSession> loadData(String filename) throws IOException {
         try (Stream<String> stream = Files.lines(Paths.get(filename))) {
@@ -30,7 +30,7 @@ public class DataLoader {
     }
 
     private LocalDateTime parseTime(String time) {
-        return LocalDateTime.parse(time, DATE_FORMATTER);
+        return LocalDateTime.parse(time, dateTimeFormatter);
     }
 
 }
